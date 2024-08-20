@@ -87,13 +87,17 @@ public:
     //     return *this;
     // }
 
-    // 编译器生成的缺省拷贝赋值函数是如下形式，会调用父类的构造函数
+    // 编译器生成的缺省拷贝赋值函数是如下形式，会调用父类和类成员的构造函数
     // S& operator=(const S& s) {
     //     cout << "S& operator=(const S&)" << endl;
+    //     // static_cast<C*>(this)->operator=(s);
+    //     // static_cast<B*>(this)->operator=(s);
+    //     // static_cast<B&>(*this) = (const B&)(s);
+    //     // static_cast<C&>(*this) = (const C&)(s);
     //     C::operator=(s);
     //     B::operator=(s);
-    //     _d.operator=(s._d);
-    //     _e.operator=(s._e);
+    //     _d.operator=(s._d); // _d = s._d;
+    //     _e.operator=(s._e); // _e = s._e;
     //     // ...
     //     return *this;
     // }
