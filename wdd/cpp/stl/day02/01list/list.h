@@ -107,64 +107,52 @@ public:
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            Node* node = _head;
-            _head = _head->_next;
-            if (_head ==nullptr) {
-                _tail = nullptr;
-            }
-            delete node;
+        Node* node = _head;
+        _head = _head->_next;
+        if (_head ==nullptr) {
+            _tail = nullptr;
         }
+        delete node;
     }
 
     void pop_back() {
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            Node* node = _tail;
-            _tail = _tail->_prev;
-            if (_tail == nullptr) {
-                _head = nullptr;
-            }
-            delete node;
+        Node* node = _tail;
+        _tail = _tail->_prev;
+        if (_tail == nullptr) {
+            _head = nullptr;
         }
+        delete node;
     }
 
     T& front() {
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            return _head->data;
-        }
+        return _head->data;
     }
 
     const T& front() const {
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            return _head->data;
-        }
+        return _head->data;
     }
 
     T& back() {
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            return _tail->data;
-        }
+        return _tail->data;
     }
 
     const T& back() const {
         if (empty()) {
             throw underflow_error("empty");
         }
-        else {
-            return _tail->data;
-        }
+        return _tail->data;
     }
 
     template<typename F>
@@ -185,6 +173,74 @@ private:
         Node* _prev;
     };
 
+public:
+    class Iterator {
+    public:
+        bool operator==(const Iterator& it) const {
+            return _it_cur == it._it_cur;
+        }
+
+        bool operator!=(const Iterator& it) const {
+            return _it_cur != it._it_cur;
+        }
+
+        Iterator& operator++() {
+            _it_cur = _it_cur->_next;
+            return *this;
+        }
+
+        Iterator operator++(int) {
+            Iterator tmp(*this);
+            ++(*this);
+            return tmp;
+        }
+
+        Iterator& operator--() {
+            if (_it_cur == nullptr) {
+                _it_cur = _it_tail;
+            }
+            else {
+                _it_cur = _it_cur->_prev;
+            }
+
+            return *this;
+        }
+
+        Iterator operator--(int) {
+            Iterator tmp(*this);
+            --(*this);
+            return tmp;
+        }
+
+        T& operator*() {
+            return _it_cur->_data;
+        }
+
+        const T& operator*() const {
+            return _it_cur->_data;
+        }
+
+        T* operator->() {
+            return &_it_cur->_data; // return &**this;
+        }
+
+    private:
+        explicit Iterator(Node* head = nullptr, Node* tail = nullptr, Node* cur = nullptr)
+            : _it_cur(cur), _it_head(head), _it_tail(tail) {}
+
+        Node* _it_cur;
+        Node* _it_head;
+        Node* _it_tail;
+
+        friend class List;
+    };
+
+    Iterator begin() { return Iterator(_head, _tail, _head); }
+
+    // 最后一个节点的下一个位置
+    Iterator end() { return Iterator(_head, _tail, nullptr); }
+
+private:
     Node* _head;
     Node* _tail;
 };

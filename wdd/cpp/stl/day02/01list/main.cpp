@@ -20,6 +20,14 @@ int main() {
     //     cout << a << endl;
     // });
     l2.print(Show());
+    cout << endl;
+    auto it= l2.begin();
+    for(; it != l2.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << endl;
+    --it;
+    cout << *it << endl;
 
     return 0;
 }
