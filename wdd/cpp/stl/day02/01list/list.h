@@ -235,6 +235,66 @@ public:
         friend class List;
     };
 
+    class ReverseIterator {
+    public:
+        bool operator==(const ReverseIterator& it) const {
+            return _rit_cur == it._rit_cur;
+        }
+
+        bool operator!=(const ReverseIterator& it) const {
+            return _rit_cur != it._rit_cur;
+        }
+        ReverseIterator& operator++() {
+            _rit_cur = _rit_cur->_prev;
+            return *this;
+        }
+        ReverseIterator operator++(int) {
+            ReverseIterator tmp(*this);
+            ++(*this);
+            return tmp;
+        }
+        ReverseIterator& operator--() {
+            if (_rit_cur == nullptr) {
+                _rit_cur = _rit_head;
+            }
+            else {
+                _rit_cur = _rit_cur->_next;
+            }
+            return *this;
+        }
+        ReverseIterator operator--(int) {
+            Iterator tmp(*this);
+            --(*this);
+            return tmp;
+        }
+        T& operator*() {
+            return _rit_cur->_data;
+        }
+
+        const T& operator*() const {
+            return _rit_cur->_data;
+        }
+
+        T* operator->() {
+            return &_rit_cur->_data; // return &**this;
+        }
+    private:
+        explicit ReverseIterator(Node* head = nullptr, Node* tail = nullptr, Node* cur = nullptr)
+            :  _rit_cur(cur), _rit_head(head), _rit_tail(tail) {}
+
+        Node* _rit_cur;
+        Node* _rit_head;
+        Node* _rit_tail;
+
+        friend class List;
+    };
+
+    ReverseIterator rbegin() {
+        return ReverseIterator(_head, _tail, _tail);
+    }
+    ReverseIterator rend() {
+        return ReverseIterator(_head, _tail, nullptr);
+    }
     Iterator begin() { return Iterator(_head, _tail, _head); }
 
     // 最后一个节点的下一个位置

@@ -28,6 +28,10 @@ int main() {
     cout << endl;
     --it;
     cout << *it << endl;
-
+    List<int>::ReverseIterator rit = l2.rbegin();
+    for(; rit != l2.rend(); ++rit) {
+        cout << *rit << " ";
+    }
+    cout << endl;
     return 0;
 }
