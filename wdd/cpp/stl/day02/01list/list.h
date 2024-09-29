@@ -17,16 +17,15 @@ public:
         }
     }
 
-    template<typename C>
-    explicit List(const C& container) : _head(nullptr), _tail(nullptr) {
-        for(const C& data: container) {
+    List(initializer_list<T> container) : _head(nullptr), _tail(nullptr) {
+        for(const T& data: container) {
             push_back(data);
         }
     }
 
     List(const List& list) {
-        for(Node* node = list._head; node!=nullptr; node= node->_next) {
-            push_back(node->data);
+        for(Node* node = list._head; node != nullptr; node = node->_next) {
+            push_back(node->_data);
         }
     }
 
@@ -292,13 +291,89 @@ public:
     ReverseIterator rbegin() {
         return ReverseIterator(_head, _tail, _tail);
     }
+
     ReverseIterator rend() {
         return ReverseIterator(_head, _tail, nullptr);
     }
-    Iterator begin() { return Iterator(_head, _tail, _head); }
+
+    Iterator begin() {
+        return Iterator(_head, _tail, _head);
+    }
 
     // 最后一个节点的下一个位置
-    Iterator end() { return Iterator(_head, _tail, nullptr); }
+    Iterator end() {
+        return Iterator(_head, _tail, nullptr);
+    }
+
+    // 在it前插入
+    Iterator insert(Iterator it, const T& data) {
+        if (it._it_cur == nullptr) {
+            push_back(data);
+            return Iterator(_head, _tail, _tail);
+        }
+
+        Node* node = new Node(data, it._it_cur, it._it_cur->_prev);
+        if (it._it_cur->_prev != nullptr) {
+            it._it_cur->_prev->_next = node;
+        }
+        else {
+            _head = node;
+        }
+
+        it._it_cur->_prev = node;
+
+        return Iterator(_head, _tail, node);
+    }
+
+    // 在it前插入[beg,end)区间的元素
+    template<typename IT> void insert(Iterator it, IT beg, IT end) {
+        for(; beg != end; ++beg) {
+            insert(it, *beg);
+        }
+    }
+
+    void insert(Iterator it, initializer_list<T> initList) {
+        for (const T& data : initList) {
+            // cout << "<<: " << data << endl;
+            insert(it, data);
+        }
+    }
+
+    // 删除it指向的元素
+    // 返回删除元素的下一个迭代器
+    Iterator erase(Iterator it) {
+        if (it._it_cur == nullptr) {
+            throw overflow_error("list overflow");
+        }
+
+        if(it._it_cur->_prev != nullptr) {
+            it._it_cur->_prev->_next = it._it_cur->_next;
+        }
+        else {
+            _head = it._it_cur->_next;
+        }
+
+        if (it._it_cur->_next != nullptr) {
+            it._it_cur->_next->_prev = it._it_cur->_prev;
+        }
+        else {
+            _tail = it._it_cur->_prev;
+        }
+
+        Iterator next(_head, _tail, it._it_cur->_next);
+
+        delete it._it_cur;
+
+        return next;
+    }
+
+    // 删除[beg,end)区间的元素
+    Iterator erase(Iterator beg, Iterator end) {
+        for (; beg != end;) { // 不能使用++beg
+            beg = erase(beg);
+        }
+        return end;
+    }
 
 private:
     Node* _head;
