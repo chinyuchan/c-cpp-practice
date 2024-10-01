@@ -153,5 +153,10 @@
 * 重载了`operator()`运算符的对象、函数指针、`lambda`表达式
 * 制定算法的策略
 
+## 智能指针
+* `smart_ptr`
+* `unique_ptr`
+* `shared_ptr`
+* `weak_ptr`
 
 
