@@ -135,6 +135,10 @@
 * 容器与算法的粘合剂，使得算法不局限于某一种容器，更加通用
 * 类模板
 
+![begin-end](./docs/images/begin-end.png)
+
+![rbegin-rend](./docs/images/rbegin-rend.png)
+
 ### 适配器
 为了适配或达到某种要求，对容器、迭代器、函数的接口进行改造
 * 容器适配器
