@@ -111,5 +111,12 @@ int main()
     it -= 1;
     cout << *it << endl;
     cout << "-----------------------------------------" << endl;
+    vector<int> v4{1, 2, 3, 4, 5, 6, 7, 8, 9};
+    erase_if(v4, [](int x) { return x % 2 == 0; }); // C++20
+    for(auto const& x: v4) {
+        cout << x << " ";
+    }
+    cout << endl;
+    cout << "-----------------------------------------" << endl;
     return 0;
 }
