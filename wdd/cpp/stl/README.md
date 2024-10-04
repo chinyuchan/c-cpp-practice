@@ -163,4 +163,18 @@
 * `shared_ptr`
 * `weak_ptr`
 
+| method                     | vector | list | deque | forward_list |
+|----------------------------|--------|------|-------|--------------|
+| `at`                       | Y      | N    | Y     | N            |
+| `[]`                       | Y      | N    | Y     | N            |
+| `back`                     | Y      | Y    | Y     | N            |
+| `front`                    | Y      | Y    | Y     | Y            |
+| `push_front/emplace_front` | N      | Y    | Y     | Y            |
+| `pop_front`                | N      | Y    | Y     | Y            |
+| `push_back/emplate_back`   | Y      | Y    | Y     | N            |
+| `pop_back`                 | Y      | Y    | Y     | N            |
+| `size`                     | Y      | Y    | Y     | N            |
+| `resize`                   | Y      | Y    | Y     | Y            |
+
+
 
