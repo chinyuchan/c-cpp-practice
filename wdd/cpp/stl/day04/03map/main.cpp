@@ -15,11 +15,21 @@ public:
         _age = s._age;
     }
 
+    friend ostream& operator<<(ostream& os, const Student& s) {
+        return os << s._no << " " << s._name << " " << s._age;
+    }
+
 private:
     int _no;
     string _name;
     int _age;
 };
+
+void show(const map<int,Student>& m) {
+    for(const auto& x : m) {
+        cout << x.second << endl;
+    }
+}
 
 int main() {
     map<int, Student> m;
@@ -33,8 +43,15 @@ int main() {
 
     // 先构造一个Student对象再拷贝到对应的内存中
     m.try_emplace(1002, Student{1002, "Charlie", 80});
+    show(m);
 
     cout << m.size() << endl;
+    m.erase(1001);
+    cout << m.size() << endl;
+    m.erase(m.begin());
+    cout << m.size() << endl;
+
+    show(m);
 
     return 0;
 }
